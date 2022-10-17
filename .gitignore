@@ -1,0 +1,35 @@
+apkIcons/
+target/
+./static/
+!.mvn/wrapper/maven-wrapper.jar
+*.pyc
+*.pydevproject
+*.log
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+nbproject/private/
+build/
+nbbuild/
+dist/
+bin/
+nbdist/
+.nb-gradle/
+logs/
+*.log
+LOG_PATH_IS_UNDEFINED/
+./testApks/manifest/
+

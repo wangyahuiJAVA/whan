@@ -1,0 +1,63 @@
+spring:
+  application:
+    name: seata-gateway-server-dev
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: '172.16.38.71:8848'
+        enabled: true
+        register-enabled: true
+      config:
+        username: nacos
+        password: Tpnacos111
+
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]': # 匹配所有请求
+            allowedOrigins: "*" #跨域处理 允许所有的域
+            allowedMethods: # 支持的方法
+              - GET
+              - POST
+              - PUT
+              - DELETE
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      #      httpclient:
+      #        connect-timeout: 1000
+      #        response-timeout: 10s
+      routes:
+        ## 认证服务
+        - id: seata-auth
+          uri: lb://seata-auth-server-dev
+          predicates:
+            - Path=/instance/auth/**
+          filters:
+            - StripPrefix=1
+
+        ## 订单服务
+        - id: seata-order
+          uri: lb://seata-order-server-dev
+          predicates:
+            - Path=/instance/order/**
+          filters:
+            - StripPrefix=1
+
+        ## 商品服务
+        - id: seata-product
+          uri: lb://seata-product-server-dev
+          predicates:
+            - Path=/instance/product/**
+          filters:
+            - StripPrefix=1
+
+        ## 商品服务
+        - id: seata-warehouse
+          uri: lb://seata-warehouse-server-dev
+          predicates:
+            - Path=/instance/warehouse/**
+          filters:
+            - StripPrefix=1

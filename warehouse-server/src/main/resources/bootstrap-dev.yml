@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: seata-order-server-dev
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: '172.16.38.71:8848'
+        enabled: true
+        register-enabled: true
+      config:
+        username: nacos
+        password: Tpnacos111
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://121.36.59.202:3306/warehouse?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: admin

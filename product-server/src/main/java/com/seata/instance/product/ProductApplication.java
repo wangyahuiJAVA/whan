@@ -13,7 +13,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @Slf4j
 @SpringBootApplication(scanBasePackages = {"com.seata.instance"})
 @MapperScan({"com.seata.instance.product.mapper"})
-//@EnableFeignClients(value = {"com.seata.instance"})
+@EnableFeignClients(value = {"com.seata.instance"})
 public class ProductApplication {
 
     public static void main(String[] args) {

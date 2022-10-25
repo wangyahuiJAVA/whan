@@ -3,15 +3,20 @@ package com.seata.instance.order.service.impl;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.seata.instance.common.api.product.SKuApi;
+import com.seata.instance.common.base.Result;
 import com.seata.instance.common.model.order.Order;
+import com.seata.instance.common.model.order.OrderProduct;
+import com.seata.instance.common.model.product.Sku;
 import com.seata.instance.common.qo.OrderQO;
+import com.seata.instance.common.qo.SkuListByIdsQO;
 import com.seata.instance.common.vo.OrderVO;
 import com.seata.instance.order.manager.OrderManager;
 import com.seata.instance.order.mapper.OrderMapper;
+import com.seata.instance.order.mapper.OrderProductMapper;
 import com.seata.instance.order.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -19,10 +24,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author wyh
@@ -39,7 +42,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Autowired
     private OrderManager orderManager;
 
-    private volatile Integer totalNum = 0;
+    @Autowired
+    private SKuApi sKuApi;
+
+    @Autowired
+    private OrderProductMapper orderProductMapper;
 
     @Override
     public IPage<OrderVO> getOrderList(OrderQO orderQO) {
@@ -50,37 +57,16 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         IPage<Order> orderPage = this.page(page, orderLambdaQueryWrapper);
         BeanUtils.copyProperties(orderPage,orderVOPage);
         orderVOPage.setRecords(JSONArray.parseArray(JSONObject.toJSONString(orderPage.getRecords()),OrderVO.class));
-        // Feign调用查询商品信息
-
-        // 模拟产生的数据
-        List<Integer> list = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            list.add(i);
-        }
-        // 线程同步--因为线程同步的时候才可以调用wait()方法
-        synchronized (this){
-            list.forEach(number->{
-                if (totalNum < 10){
-                    sendMsg(number);
-                    totalNum ++;
-                }else {
-                    try {
-                        log.info("线程等待开始");
-                        this.wait(2000);
-                        log.info("结束线程等待");
-                        sendMsg(number);
-                        totalNum = 0;
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
+        if (orderPage.getRecords() != null && orderPage.getRecords().size() > 0) {
+            // Feign调用查询商品信息
+            LambdaQueryWrapper<OrderProduct> orderProductLambdaQueryWrapper = new LambdaQueryWrapper();
+            orderProductLambdaQueryWrapper.select(OrderProduct::getOrderId,OrderProduct::getSkuId)
+                    .in(OrderProduct::getOrderId, orderVOPage.getRecords().stream().map(OrderVO::getId).collect(Collectors.toList()));
+            List<OrderProduct> orderProducts = orderProductMapper.selectList(orderProductLambdaQueryWrapper);
+            Result<List<Sku>> skuListByIds = sKuApi.getSkuListByIds(new SkuListByIdsQO(new ArrayList<>(orderProducts.stream().map(OrderProduct::getSkuId).collect(Collectors.toSet()))));
+//            skuListByIds.getData().stream()
         }
         return orderVOPage;
     }
 
-    public void sendMsg(int i){
-        System.out.println(DateTimeFormatter.ofPattern("HH:mm:ss").format(LocalDateTime.now())
-                +"---------"+i);
-    }
 }

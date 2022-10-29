@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.seata.instance.common.api.product.SKuApi;
+import com.seata.instance.common.api.product.SkuApi;
 import com.seata.instance.common.base.Result;
 import com.seata.instance.common.model.order.Order;
 import com.seata.instance.common.model.order.OrderProduct;
@@ -24,7 +24,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -43,7 +45,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     private OrderManager orderManager;
 
     @Autowired
-    private SKuApi sKuApi;
+    private SkuApi skuApi;
 
     @Autowired
     private OrderProductMapper orderProductMapper;
@@ -62,9 +64,21 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             LambdaQueryWrapper<OrderProduct> orderProductLambdaQueryWrapper = new LambdaQueryWrapper();
             orderProductLambdaQueryWrapper.select(OrderProduct::getOrderId,OrderProduct::getSkuId)
                     .in(OrderProduct::getOrderId, orderVOPage.getRecords().stream().map(OrderVO::getId).collect(Collectors.toList()));
+            // 当前分页订单数据下的所有商品id
             List<OrderProduct> orderProducts = orderProductMapper.selectList(orderProductLambdaQueryWrapper);
-            Result<List<Sku>> skuListByIds = sKuApi.getSkuListByIds(new SkuListByIdsQO(new ArrayList<>(orderProducts.stream().map(OrderProduct::getSkuId).collect(Collectors.toSet()))));
-//            skuListByIds.getData().stream()
+            // feign调用获取商品信息
+            Result<List<Sku>> skuListByIds = skuApi.getSkuListByIds(new SkuListByIdsQO(new ArrayList<>(orderProducts.stream().map(OrderProduct::getSkuId).collect(Collectors.toSet()))));
+
+            Map<Long, List<OrderProduct>> orderProductListCollect = orderProducts.stream().collect(Collectors.groupingBy(OrderProduct::getOrderId));
+            Map<Long, Sku> skuCollect = skuListByIds.getData().stream().collect(Collectors.toMap(Sku::getId, Function.identity(), (key1, key2) -> key2));
+            orderVOPage.getRecords().forEach(order -> {
+                List<Sku> skuList = new ArrayList<>();
+                List<OrderProduct> skuIdList = orderProductListCollect.get(order.getId());
+                skuIdList.forEach(orderProduct -> {
+                    skuList.add(skuCollect.get(orderProduct.getSkuId()));
+                });
+                order.setSkuList(skuList);
+            });
         }
         return orderVOPage;
     }

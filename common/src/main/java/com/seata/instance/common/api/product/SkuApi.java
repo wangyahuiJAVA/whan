@@ -16,7 +16,7 @@ import java.util.List;
  * @createTime 2022年10月18日 14:28:00
  */
 @FeignClient(value = "seata-product-server-dev", path = "/product/sku", fallbackFactory = SkuFallback.class)
-public interface SKuApi {
+public interface SkuApi {
     /**
      * 根据skuIds集合查询sku集合
      *

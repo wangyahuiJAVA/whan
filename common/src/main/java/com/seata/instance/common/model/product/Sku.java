@@ -13,7 +13,8 @@ import java.time.LocalDateTime;
  */
 @Data
 public class Sku extends BaseModel {
-    private String skuCode;
-    private String skuName;
+    private String code;
+    private String name;
+    private String imgMaster;
     private Double weight;
 }

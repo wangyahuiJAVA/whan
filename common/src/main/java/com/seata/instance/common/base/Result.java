@@ -1,5 +1,6 @@
 package com.seata.instance.common.base;
 
+import com.seata.instance.common.enums.CodeEnum;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -30,5 +31,37 @@ public class Result<T> implements Serializable {
     public Result(String code, String msg){
         setCode(code);
         setMsg(msg);
+    }
+
+    public static Result failed(String errorMsg) {
+        Result result = new Result();
+        result.setCode(CodeEnum.INTERNAL_SERVER_ERROR.getCode());
+        result.setMsg(errorMsg);
+        result.setData("");
+        return result;
+    }
+
+    public static Result failed(String code,String errorMsg) {
+        Result result = new Result();
+        result.setCode(code);
+        result.setMsg(errorMsg);
+        result.setData("");
+        return result;
+    }
+
+    public static Result success() {
+        Result result = new Result();
+        result.setCode(CodeEnum.SUCCESS.getCode());
+        result.setMsg(CodeEnum.SUCCESS.getMsg());
+        result.setData("");
+        return result;
+    }
+
+    public static Result success(Object object) {
+        Result result = new Result();
+        result.setCode(CodeEnum.SUCCESS.getCode());
+        result.setMsg(CodeEnum.SUCCESS.getMsg());
+        result.setData(object);
+        return result;
     }
 }

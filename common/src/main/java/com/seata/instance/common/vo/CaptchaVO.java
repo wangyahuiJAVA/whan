@@ -20,7 +20,7 @@ public class CaptchaVO implements Serializable {
     /** 验证码图片 */
     private String captchaBase;
 
-    /** 验证码标识 */
+    /** 验证码密钥 */
     private String captchaKey;
 
     /** 验证码 */

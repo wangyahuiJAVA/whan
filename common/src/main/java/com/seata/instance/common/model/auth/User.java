@@ -19,4 +19,6 @@ public class User extends BaseModel {
 
     private Address address;
 
+    private String remark;
+
 }

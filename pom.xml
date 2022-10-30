@@ -38,7 +38,7 @@
         <spring-cloud-openfeign-core.version>2.2.10.RELEASE</spring-cloud-openfeign-core.version>
         <spring-cloud-getaway.version>2.2.6.RELEASE</spring-cloud-getaway.version>
         <seata-all.version>1.4.0</seata-all.version>
-        <hutool.version>4.3.0</hutool.version>
+        <hutool.version>5.8.5</hutool.version>
     </properties>
 
     <!--    声明整个项目的父引用，子模块同样具有继承功能-->
@@ -168,6 +168,12 @@
             <dependency>
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-core</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
                 <version>${hutool.version}</version>
             </dependency>
 

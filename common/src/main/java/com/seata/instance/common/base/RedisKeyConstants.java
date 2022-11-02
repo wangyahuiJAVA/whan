@@ -10,4 +10,6 @@ public class RedisKeyConstants {
     public static final String CAPTCHA_PREFIX = "captcha";
     /** 验证码超时时间 */
     public static final Long CAPTCHA_TIMEOUT = 300L;
+    /** 网关超时时间 */
+    public static final Long GATEWAY_TIMEOUT = 60L;
 }

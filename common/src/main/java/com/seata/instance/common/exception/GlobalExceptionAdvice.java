@@ -5,6 +5,7 @@ import com.seata.instance.common.base.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,15 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 @ControllerAdvice
 public class GlobalExceptionAdvice {
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseBody
+    @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
+    public Result methodArgumentNotValidException(HttpServletRequest request, MethodArgumentNotValidException e) {
+        log.error("not found  error, "  + e.getMessage());
+        return Result.failed(e.getBindingResult().getAllErrors().stream().findFirst().get().getDefaultMessage());
+    }
+
     @ExceptionHandler(Exception.class)
     @ResponseBody
     @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
@@ -31,6 +41,8 @@ public class GlobalExceptionAdvice {
         log.error("not found  error, "  + e.getMessage());
         return Result.failed(e.getCode(), e.getMessage());
     }
+
+
 
     // 预设全局参数绑定
     @ModelAttribute

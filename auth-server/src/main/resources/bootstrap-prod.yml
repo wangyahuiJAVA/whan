@@ -1,6 +1,16 @@
 spring:
   application:
-    name: seata-product-server-dev
+    name: seata-auth-server-prod
+  redis:
+    host: 121.36.59.202
+    database: 11
+    port: 6379
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1ms
+        max-idle: 8
+        min-idle: 0
 
   cloud:
     nacos:
@@ -8,13 +18,12 @@ spring:
         server-addr: '121.36.59.202:8848'
         enabled: true
         register-enabled: true
-        namespace: df84d33d-e680-4ae4-ba56-8c5d145c6b5b
       config:
         username: nacos
         password: nacos
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://121.36.59.202:3306/product?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    url: jdbc:mysql://121.36.59.202:3306/auth?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
     username: root
     password: admin

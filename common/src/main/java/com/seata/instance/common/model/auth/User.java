@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.seata.instance.common.model.BaseModel;
 import com.seata.instance.common.model.warehouse.Address;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -16,15 +18,19 @@ import java.time.LocalDateTime;
  */
 @Data
 @TableName(value = "user")
+@ApiModel(value = "用户")
 public class User extends BaseModel {
 
-    @TableField(value = "昵称")
+    @ApiModelProperty(value = "昵称")
+    @TableField(value = "user_name")
     private String userName;
 
-    @TableField(value = "地址id")
+    @ApiModelProperty(value = "地址")
+    @TableField(value = "address_id")
     private Long addressId;
 
-    @TableField(value = "备注")
+    @ApiModelProperty(value = "备注")
+    @TableField(value = "remark")
     private String remark;
 
 }

@@ -5,6 +5,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * 服务主入口
@@ -14,6 +15,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication(scanBasePackages = {"com.seata.instance"})
 @MapperScan({"com.seata.instance.order.mapper"})
 @EnableFeignClients(value = {"com.seata.instance"})
+@EnableSwagger2
 public class OrderApplication {
 
     public static void main(String[] args) {

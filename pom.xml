@@ -39,6 +39,8 @@
         <spring-cloud-getaway.version>2.2.6.RELEASE</spring-cloud-getaway.version>
         <seata-all.version>1.4.0</seata-all.version>
         <hutool.version>5.8.5</hutool.version>
+        <swagger.version>2.9.2</swagger.version>
+        <swagger-ui.version>2.10.0</swagger-ui.version>
     </properties>
 
     <!--    声明整个项目的父引用，子模块同样具有继承功能-->
@@ -176,6 +178,19 @@
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${swagger-ui.version}</version>
+            </dependency>
+
 
         </dependencies>
 

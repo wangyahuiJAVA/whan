@@ -1,6 +1,6 @@
 spring:
   application:
-    name: seata-gateway-server-dev
+    name: seata-gateway-server-test
   redis:
     host: 121.36.59.202
     database: 11
@@ -18,7 +18,7 @@ spring:
         server-addr: '121.36.59.202:8848'
         enabled: true
         register-enabled: true
-        namespace: df84d33d-e680-4ae4-ba56-8c5d145c6b5b
+        namespace: 3f0174b6-0df8-454c-ab18-b4a517b5af8d
       config:
         username: nacos
         password: nacos
@@ -43,7 +43,7 @@ spring:
       routes:
         ## 认证服务
         - id: seata-auth
-          uri: lb://seata-auth-server-dev
+          uri: lb://seata-auth-server-test
           predicates:
             - Path=/instance/auth/**
           filters:
@@ -51,7 +51,7 @@ spring:
 
         ## 订单服务
         - id: seata-order
-          uri: lb://seata-order-server-dev
+          uri: lb://seata-order-server-test
           predicates:
             - Path=/instance/order/**
           filters:
@@ -59,7 +59,7 @@ spring:
 
         ## 商品服务
         - id: seata-product
-          uri: lb://seata-product-server-dev
+          uri: lb://seata-product-server-test
           predicates:
             - Path=/instance/product/**
           filters:
@@ -67,7 +67,7 @@ spring:
 
         ## 商品服务
         - id: seata-warehouse
-          uri: lb://seata-warehouse-server-dev
+          uri: lb://seata-warehouse-server-test
           predicates:
             - Path=/instance/warehouse/**
           filters:

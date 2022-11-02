@@ -1,5 +1,7 @@
 package com.seata.instance.common.qo;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +18,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ApiModel(value = "查询sku集合入参")
 public class SkuListByIdsQO extends PageQO{
+    @ApiModelProperty(value = "id集合")
     private List<Long> ids;
 }

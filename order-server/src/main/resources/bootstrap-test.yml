@@ -1,6 +1,6 @@
 spring:
   application:
-    name: seata-auth-server-dev
+    name: seata-order-server-test
   redis:
     host: 121.36.59.202
     database: 11
@@ -11,6 +11,11 @@ spring:
         max-wait: -1ms
         max-idle: 8
         min-idle: 0
+#  rabbitmq:
+#    host: 192.168.31.201
+#    port: 30671
+#    username: yld
+#    password: yld2021
 
   cloud:
     nacos:
@@ -18,13 +23,13 @@ spring:
         server-addr: '121.36.59.202:8848'
         enabled: true
         register-enabled: true
-        namespace: df84d33d-e680-4ae4-ba56-8c5d145c6b5b
+        namespace: 3f0174b6-0df8-454c-ab18-b4a517b5af8d
       config:
         username: nacos
         password: nacos
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://121.36.59.202:3306/auth?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    url: jdbc:mysql://121.36.59.202:3306/order?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
     username: root
     password: admin
